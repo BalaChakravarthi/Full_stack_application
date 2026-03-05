@@ -74,7 +74,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ALLOWED_ORIGINS = [
-    "https://full-stack-application-pi.vercel.app"
+    "https://full-stack-application-pi.vercel.app",
+    "https://full-stack-application-git-main-bala-chakravarthis-projects.vercel.app",
+    "https://full-stack-application-31qssfn2j-bala-chakravarthis-projects.vercel.app"
 ]
     
 CORS_ALLOW_ALL_ORIGINS = True
