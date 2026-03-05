@@ -129,7 +129,7 @@ function Profile() {
               preview
                 ? preview
                 : user?.profile_image
-                ? `http://127.0.0.1:8000${user.profile_image}`
+                ? `https://full-stack-application-o8bb.onrender.com${user.profile_image}`
                 : "https://via.placeholder.com/120"
             }
             alt="Profile"
