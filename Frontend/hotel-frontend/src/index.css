@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Default Light Mode */
+body {
+  @apply bg-gray-100 text-gray-800;
+}
+
+/* Dark Mode */
+html.dark body {
+  @apply bg-gray-900 text-white;
+}
+
+.dark .fc {
+  background-color: #1f2937;
+  color: white;
+}
+
+.dark .fc-theme-standard td,
+.dark .fc-theme-standard th {
+  border-color: #374151;
+}
