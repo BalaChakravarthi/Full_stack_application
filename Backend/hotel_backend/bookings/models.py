@@ -126,7 +126,7 @@ Thank you for choosing LuxStay!
         email.attach_alternative(html_content, "text/html")
 
         # ✅ Prevent server crash if SMTP fails
-        email.send(fail_silently=True)
+        email.send()
 
     except Exception as e:
         print("Email sending failed:", e)
