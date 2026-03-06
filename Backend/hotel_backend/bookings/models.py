@@ -4,7 +4,6 @@ from rooms.models import Room
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
 
 
 class Booking(models.Model):
@@ -116,13 +115,18 @@ Thank you for choosing LuxStay!
         </p>
     </div>
     """
+    try:
+        email = EmailMultiAlternatives(
+            subject,
+            text_content,
+            settings.EMAIL_HOST_USER,
+            [instance.user.email],
+        )
 
-    email = EmailMultiAlternatives(
-        subject,
-        text_content,
-        settings.EMAIL_HOST_USER,
-        [instance.user.email],
-    )
+        email.attach_alternative(html_content, "text/html")
 
-    email.attach_alternative(html_content, "text/html")
-    email.send(fail_silently=False)
+        # ✅ Prevent server crash if SMTP fails
+        email.send(fail_silently=True)
+
+    except Exception as e:
+        print("Email sending failed:", e)
