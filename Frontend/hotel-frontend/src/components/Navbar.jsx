@@ -20,6 +20,16 @@ function Navbar() {
   const role = localStorage.getItem("role");
   const username = localStorage.getItem("username");
 
+  /* IMAGE URL HELPER */
+  const getImageUrl = (img) => {
+    if (!img) return "";
+    if (img.startsWith("http")) return img;
+
+    return `${import.meta.env.VITE_API_URL}${
+      img.startsWith("/media") ? "" : "/media"
+    }${img}`;
+  };
+
   /* DARK MODE */
   useEffect(() => {
     const html = document.documentElement;
@@ -76,12 +86,13 @@ function Navbar() {
     }`;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50
-                    bg-white/90 dark:bg-gray-900/90
-                    backdrop-blur-md
-                    border-b border-gray-200 dark:border-gray-700
-                    shadow-sm">
-
+    <nav
+      className="fixed top-0 left-0 w-full z-50
+      bg-white/90 dark:bg-gray-900/90
+      backdrop-blur-md
+      border-b border-gray-200 dark:border-gray-700
+      shadow-sm"
+    >
       <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
 
         {/* LOGO */}
@@ -118,8 +129,8 @@ function Navbar() {
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="px-3 py-1 border rounded-md
-                       border-gray-300 dark:border-gray-600
-                       hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              border-gray-300 dark:border-gray-600
+              hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             {darkMode ? "☀️" : "🌙"}
           </button>
@@ -133,12 +144,7 @@ function Navbar() {
               >
                 {profileImage ? (
                   <img
-                    src={
-                      profileImage.startsWith("http")
-                        ? profileImage
-                        :`${import.meta.env.VITE_API_URL}${profileImage}`
-                        // : `https://full-stack-application-o8bb.onrender.com${profileImage}`
-                    }
+                    src={getImageUrl(profileImage)}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
@@ -168,14 +174,15 @@ function Navbar() {
               )}
             </div>
           )}
+
         </div>
 
-        {/* MOBILE HAMBURGER */}
+        {/* MOBILE BUTTON */}
         <button
           onClick={() => setMobileMenu(!mobileMenu)}
           className="md:hidden flex flex-col justify-center items-center w-10 h-10
-                     border border-gray-300 dark:border-gray-600
-                     rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          border border-gray-300 dark:border-gray-600
+          rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
         >
           <span className="w-6 h-0.5 bg-gray-700 dark:bg-white mb-1"></span>
           <span className="w-6 h-0.5 bg-gray-700 dark:bg-white mb-1"></span>
@@ -202,12 +209,7 @@ function Navbar() {
                 <div className="w-8 h-8 rounded-full overflow-hidden border border-blue-500">
                   {profileImage ? (
                     <img
-                      src={
-                        profileImage.startsWith("http")
-                          ? profileImage
-                          : `${import.meta.env.VITE_API_URL}${profileImage}`
-                          // : `https://full-stack-application-o8bb.onrender.com${profileImage}`
-                      }
+                      src={getImageUrl(profileImage)}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
@@ -226,22 +228,20 @@ function Navbar() {
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="flex items-center gap-2 px-3 py-2 border rounded-md
-                       border-gray-300 dark:border-gray-600
-                       hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            border-gray-300 dark:border-gray-600
+            hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
           </button>
 
           {token && (
-            <button
-              onClick={logout}
-              className="block text-red-600"
-            >
+            <button onClick={logout} className="block text-red-600">
               Logout
             </button>
           )}
         </div>
       )}
+
     </nav>
   );
 }
