@@ -86,7 +86,8 @@ function RoomDetails() {
               room.image
                 ? room.image.startsWith("http")
                   ? room.image
-                  : `https://full-stack-application-o8bb.onrender.com${room.image}`
+                  : `${import.meta.env.VITE_API_URL}${room.image}`
+                  // : `https://full-stack-application-o8bb.onrender.com${room.image}`
                 : "https://via.placeholder.com/600x400"
             }
             alt={room.room_type}

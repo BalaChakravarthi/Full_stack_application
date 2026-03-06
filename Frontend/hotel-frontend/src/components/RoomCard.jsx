@@ -118,7 +118,8 @@ function RoomCard({ room }) {
             room.image
               ? room.image.startsWith("http")
                 ? room.image
-                : `https://hotel-booking-app-9j4r.onrender.com/${room.image}`
+                : `${import.meta.env.VITE_API_URL}${room.image}`
+                // : `https://hotel-booking-app-9j4r.onrender.com/${room.image}`
               : "https://via.placeholder.com/400x250"
           }
           alt={room.room_type}

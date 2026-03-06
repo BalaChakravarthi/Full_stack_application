@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://full-stack-application-o8bb.onrender.com/api/",
+  // baseURL: "https://full-stack-application-o8bb.onrender.com/api/",
+  baseURL: `${import.meta.env.VITE_API_URL}/api/`,
 });
 
 API.interceptors.request.use((req) => {

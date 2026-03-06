@@ -129,7 +129,8 @@ function Profile() {
               preview
                 ? preview
                 : user?.profile_image
-                ? `https://full-stack-application-o8bb.onrender.com${user.profile_image}`
+                ? `${import.meta.env.VITE_API_URL}${user.profile_image}`
+                // ? `https://full-stack-application-o8bb.onrender.com${user.profile_image}`
                 : "https://via.placeholder.com/120"
             }
             alt="Profile"

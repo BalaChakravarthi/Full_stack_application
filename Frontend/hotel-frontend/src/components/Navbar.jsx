@@ -136,7 +136,8 @@ function Navbar() {
                     src={
                       profileImage.startsWith("http")
                         ? profileImage
-                        : `https://full-stack-application-o8bb.onrender.com${profileImage}`
+                        :`${import.meta.env.VITE_API_URL}${profileImage}`
+                        // : `https://full-stack-application-o8bb.onrender.com${profileImage}`
                     }
                     alt="Profile"
                     className="w-full h-full object-cover"
@@ -204,7 +205,8 @@ function Navbar() {
                       src={
                         profileImage.startsWith("http")
                           ? profileImage
-                          : `https://full-stack-application-o8bb.onrender.com${profileImage}`
+                          : `${import.meta.env.VITE_API_URL}${profileImage}`
+                          // : `https://full-stack-application-o8bb.onrender.com${profileImage}`
                       }
                       alt="Profile"
                       className="w-full h-full object-cover"
