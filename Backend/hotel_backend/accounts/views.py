@@ -1,19 +1,25 @@
+﻿from django.contrib.auth import update_session_auth_hash
 from rest_framework import generics
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, parser_classes, permission_classes
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.contrib.auth import update_session_auth_hash
 
-from .serializers import RegisterSerializer, CustomTokenSerializer
 from .models import User
+from .serializers import CustomTokenSerializer, RegisterSerializer
 
 
-# ===============================
-# 🔐 Change Password
-# ===============================
-@api_view(['POST'])
+def _image_url(file_field):
+    if not file_field:
+        return None
+    try:
+        return file_field.url
+    except Exception:
+        return str(file_field)
+
+
+@api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def change_password(request):
     user = request.user
@@ -28,30 +34,27 @@ def change_password(request):
 
     user.set_password(new_password)
     user.save()
-
     update_session_auth_hash(request, user)
 
     return Response({"message": "Password updated successfully"})
 
 
-# ===============================
-# 👤 Get Profile
-# ===============================
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def profile_view(request):
     user = request.user
 
-    return Response({
-        "username": user.username,
-        "email": user.email,
-        "role": user.role,
-        "profile_image": user.profile_image.url if user.profile_image else None
-    })
+    return Response(
+        {
+            "username": user.username,
+            "email": user.email,
+            "role": user.role,
+            "profile_image": _image_url(user.profile_image),
+        }
+    )
 
-from rest_framework.decorators import parser_classes
 
-@api_view(['PUT'])
+@api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
 def update_profile(request):
@@ -65,23 +68,19 @@ def update_profile(request):
 
     user.save()
 
-    return Response({
-        "username": user.username,
-        "email": user.email,
-        "profile_image": user.profile_image.url if user.profile_image else None
-    })
+    return Response(
+        {
+            "username": user.username,
+            "email": user.email,
+            "profile_image": _image_url(user.profile_image),
+        }
+    )
 
 
-# ===============================
-# 🔑 JWT Login
-# ===============================
 class CustomTokenView(TokenObtainPairView):
     serializer_class = CustomTokenSerializer
 
 
-# ===============================
-# 📝 Register
-# ===============================
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
