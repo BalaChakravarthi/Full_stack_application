@@ -24,7 +24,8 @@ load_dotenv(BASE_DIR / ".env")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret.
+# SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = 'django-insecure-xe&fa@kef#$v5dy*0b0cueutnmeo5^i2*p@vs(3ixf8^+np0_t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
@@ -55,13 +56,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'anymail',
     'cloudinary',
     'cloudinary_storage',
     'accounts',
     'rooms',
     'bookings',
-    'contact',
     # 'accounts.apps.AccountsConfig',
     # 'bookings.apps.BookingsConfig',
     # 'rooms.apps.RoomsConfig',
@@ -99,7 +98,6 @@ CORS_ALLOWED_ORIGINS = [
     for origin in (_cors_origins_from_env.split(",") if _cors_origins_from_env else _default_cors_origins)
     if origin.strip()
 ]
-CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False").lower() == "true"
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
@@ -173,12 +171,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # Cloudinary
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
@@ -188,76 +187,21 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET", ""),
     "SECURE": True,
 }
-if (
-    CLOUDINARY_STORAGE["CLOUD_NAME"]
-    and CLOUDINARY_STORAGE["API_KEY"]
-    and CLOUDINARY_STORAGE["API_SECRET"]
-):
-    cloudinary.config(
-        cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
-        api_key=CLOUDINARY_STORAGE["API_KEY"],
-        api_secret=CLOUDINARY_STORAGE["API_SECRET"],
-        secure=True,
-    )
-
-_cloudinary_ready = bool(
-    CLOUDINARY_URL
-    or (
-        CLOUDINARY_STORAGE["CLOUD_NAME"]
-        and CLOUDINARY_STORAGE["API_KEY"]
-        and CLOUDINARY_STORAGE["API_SECRET"]
-    )
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", ""),
+    api_key=os.getenv("CLOUDINARY_API_KEY", ""),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET", ""),
+    secure=True,
 )
-if _cloudinary_ready:
-    STORAGES["default"]["BACKEND"] = "cloudinary_storage.storage.MediaCloudinaryStorage"
-    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-else:
-    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
-# Email (Anymail + SendGrid)
-_sendgrid_api_key = os.getenv("SENDGRID_API_KEY", "")
-if _sendgrid_api_key:
-    EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
-    ANYMAIL = {
-        "SENDGRID_API_KEY": _sendgrid_api_key,
-    }
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-    ANYMAIL = {}
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@luxstay.com")
-CONTACT_ADMIN_EMAILS = os.getenv("CONTACT_ADMIN_EMAILS", DEFAULT_FROM_EMAIL)
+# Email
 
-# Logging (Render-friendly)
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "standard": {
-            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "standard",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": os.getenv("LOG_LEVEL", "INFO"),
-    },
-    "loggers": {
-        "django.request": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-        "django.db.backends": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_DB_LOG_LEVEL", "WARNING"),
-            "propagate": False,
-        },
-    },
-}
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "")
 
 

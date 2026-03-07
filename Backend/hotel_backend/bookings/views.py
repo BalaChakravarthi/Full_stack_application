@@ -1,7 +1,5 @@
 ﻿from datetime import datetime
 
-from django.conf import settings
-from django.core.mail import send_mail
 from django.db.models import Avg, Sum
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -13,19 +11,6 @@ from rooms.models import Room
 
 from .models import Booking
 from .serializers import BookingSerializer
-
-
-def _send_booking_payment_email(user_email):
-    try:
-        send_mail(
-            "Booking Payment Received",
-            "Your booking payment was received successfully.",
-            settings.DEFAULT_FROM_EMAIL,
-            [user_email],
-            fail_silently=True,
-        )
-    except Exception as exc:
-        print("Email failed:", exc)
 
 
 @api_view(["POST"])
@@ -173,15 +158,33 @@ def booking_calendar(request):
 def mark_booking_paid(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
 
+    # Allow only booking owner or admin to mark paid.
     if request.user.role != "admin" and booking.user_id != request.user.id:
         return Response({"error": "Access denied"}, status=status.HTTP_403_FORBIDDEN)
 
-    if booking.status != "paid":
-        booking.status = "paid"
-        booking.save(update_fields=["status"])
-        _send_booking_payment_email(booking.user.email)
+    if booking.status == "paid":
+        return Response(
+            {
+                "success": True,
+                "message": "Booking already marked as paid",
+                "booking_id": booking.id,
+                "status": booking.status,
+            },
+            status=status.HTTP_200_OK,
+        )
 
-    return Response({"message": "Payment marked as paid"}, status=status.HTTP_200_OK)
+    booking.status = "paid"
+    booking.save(update_fields=["status"])
+
+    return Response(
+        {
+            "success": True,
+            "message": "Payment marked as paid",
+            "booking_id": booking.id,
+            "status": booking.status,
+        },
+        status=status.HTTP_200_OK,
+    )
 
 
 # Backward-compatible alias if any code imports the old name.
@@ -205,3 +208,5 @@ def update_booking_status(request, booking_id):
     booking.save(update_fields=["status"])
 
     return Response({"message": "Status updated successfully", "booking_id": booking.id, "status": booking.status})
+
+
