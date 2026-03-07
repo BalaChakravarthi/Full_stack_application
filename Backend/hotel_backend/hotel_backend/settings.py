@@ -30,7 +30,18 @@ load_dotenv(BASE_DIR / ".env")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ["*"]
+_default_allowed_hosts = [
+    "full-stack-application-o8bb.onrender.com",
+    "localhost",
+    "127.0.0.1",
+    "*",
+]
+_allowed_hosts_from_env = os.getenv("ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in (_allowed_hosts_from_env.split(",") if _allowed_hosts_from_env else _default_allowed_hosts)
+    if host.strip()
+]
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-local-dev-only")
 
 
@@ -191,6 +202,6 @@ EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "noreply@hotelapp.local")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "")
 
 

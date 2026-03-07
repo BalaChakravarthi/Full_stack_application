@@ -7,7 +7,7 @@ from .views import (
     add_rating,
     admin_analytics,
     booking_calendar,
-    mark_as_paid,
+    mark_booking_paid,
 )
 
 urlpatterns = [
@@ -15,7 +15,7 @@ urlpatterns = [
     path("create/", create_booking, name="create-booking"),
     path("my/", user_bookings, name="user-bookings"),
     path("rate/<int:booking_id>/", add_rating, name="add-rating"),
-    path("paid/<int:booking_id>/", mark_as_paid, name="mark-as-paid"),
+    path("paid/<int:booking_id>/", mark_booking_paid, name="booking-paid"),
 
     # Admin
     path("all/", admin_all_bookings, name="admin-all-bookings"),

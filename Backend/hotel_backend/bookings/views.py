@@ -155,8 +155,12 @@ def booking_calendar(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def mark_as_paid(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+def mark_booking_paid(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Allow only booking owner or admin to mark paid.
+    if request.user.role != "admin" and booking.user_id != request.user.id:
+        return Response({"error": "Access denied"}, status=status.HTTP_403_FORBIDDEN)
 
     if booking.status == "paid":
         return Response(
@@ -181,6 +185,10 @@ def mark_as_paid(request, booking_id):
         },
         status=status.HTTP_200_OK,
     )
+
+
+# Backward-compatible alias if any code imports the old name.
+mark_as_paid = mark_booking_paid
 
 
 @api_view(["POST"])
