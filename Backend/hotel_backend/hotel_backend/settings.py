@@ -99,6 +99,7 @@ CORS_ALLOWED_ORIGINS = [
     for origin in (_cors_origins_from_env.split(",") if _cors_origins_from_env else _default_cors_origins)
     if origin.strip()
 ]
+CORS_ALLOW_ALL_ORIGINS = os.getenv("CORS_ALLOW_ALL_ORIGINS", "False").lower() == "true"
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
@@ -187,12 +188,17 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET", ""),
     "SECURE": True,
 }
-cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME", ""),
-    api_key=os.getenv("CLOUDINARY_API_KEY", ""),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET", ""),
-    secure=True,
-)
+if (
+    CLOUDINARY_STORAGE["CLOUD_NAME"]
+    and CLOUDINARY_STORAGE["API_KEY"]
+    and CLOUDINARY_STORAGE["API_SECRET"]
+):
+    cloudinary.config(
+        cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
+        api_key=CLOUDINARY_STORAGE["API_KEY"],
+        api_secret=CLOUDINARY_STORAGE["API_SECRET"],
+        secure=True,
+    )
 
 _cloudinary_ready = bool(
     CLOUDINARY_URL
@@ -220,5 +226,38 @@ else:
     ANYMAIL = {}
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@luxstay.com")
 CONTACT_ADMIN_EMAILS = os.getenv("CONTACT_ADMIN_EMAILS", DEFAULT_FROM_EMAIL)
+
+# Logging (Render-friendly)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": os.getenv("LOG_LEVEL", "INFO"),
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_DB_LOG_LEVEL", "WARNING"),
+            "propagate": False,
+        },
+    },
+}
 
 
