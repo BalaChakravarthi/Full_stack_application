@@ -132,7 +132,7 @@ function Navbar() {
               border-gray-300 dark:border-gray-600
               hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
-            {darkMode ? "☀️" : "🌙"}
+            {darkMode ? "Sun" : "Moon"}
           </button>
 
           {/* PROFILE */}
@@ -231,7 +231,7 @@ function Navbar() {
             border-gray-300 dark:border-gray-600
             hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
-            {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+            {darkMode ? "Sun Light Mode" : "Moon Dark Mode"}
           </button>
 
           {token && (
@@ -247,3 +247,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

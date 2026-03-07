@@ -7,16 +7,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User
-from .serializers import CustomTokenSerializer, RegisterSerializer
-
-
-def _image_url(file_field):
-    if not file_field:
-        return None
-    try:
-        return file_field.url
-    except Exception:
-        return str(file_field)
+from .serializers import CustomTokenSerializer, RegisterSerializer, UserProfileSerializer
 
 
 @api_view(["POST"])
@@ -42,39 +33,23 @@ def change_password(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def profile_view(request):
-    user = request.user
-
-    return Response(
-        {
-            "username": user.username,
-            "email": user.email,
-            "role": user.role,
-            "profile_image": _image_url(user.profile_image),
-        }
-    )
+    serializer = UserProfileSerializer(request.user, context={"request": request})
+    return Response(serializer.data)
 
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
 def update_profile(request):
-    user = request.user
-
-    user.username = request.data.get("username", user.username)
-    user.email = request.data.get("email", user.email)
-
-    if request.FILES.get("profile_image"):
-        user.profile_image = request.FILES.get("profile_image")
-
-    user.save()
-
-    return Response(
-        {
-            "username": user.username,
-            "email": user.email,
-            "profile_image": _image_url(user.profile_image),
-        }
+    serializer = UserProfileSerializer(
+        request.user,
+        data=request.data,
+        partial=True,
+        context={"request": request},
     )
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
 
 
 class CustomTokenView(TokenObtainPairView):
@@ -84,3 +59,5 @@ class CustomTokenView(TokenObtainPairView):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+
+

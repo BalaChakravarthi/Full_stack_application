@@ -132,7 +132,7 @@ function RoomCard({ room }) {
           </h2>
 
           <p className="text-gray-500 dark:text-gray-400 mt-2">
-            ₹ {room.price} / night
+            INR {room.price} / night
           </p>
 
           <button
@@ -195,7 +195,7 @@ function RoomCard({ room }) {
                 <div className="mt-5 text-center">
                   <p className="font-semibold">{nights} Nights</p>
                   <p className="text-green-600 font-bold text-lg">
-                    Total: ₹ {totalAmount}
+                    Total: INR {totalAmount}
                   </p>
                 </div>
               )}
@@ -226,12 +226,12 @@ function RoomCard({ room }) {
                 <div className="mt-8 text-center">
 
                   <h3 className="font-bold mb-2 text-lg">
-                    Pay ₹ {paymentData.amount}
+                    Pay INR {paymentData.amount}
                   </h3>
 
                   {!expired && (
                     <p className="text-red-500 font-semibold mb-3">
-                      ⏳ QR Expires in {formatTime(timeLeft)}
+                      QR expires in {formatTime(timeLeft)}
                     </p>
                   )}
 
@@ -282,3 +282,4 @@ function RoomCard({ room }) {
 }
 
 export default RoomCard;
+

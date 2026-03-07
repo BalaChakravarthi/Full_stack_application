@@ -1,9 +1,9 @@
-from rest_framework import generics, permissions
+﻿from rest_framework import generics, permissions
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Room
 from .serializers import RoomSerializer
 
-# 🟢 User View - List Rooms
+# User view - list rooms
 class RoomListView(generics.ListAPIView):
     queryset = Room.objects.filter(availability=True)
     serializer_class = RoomSerializer
@@ -49,3 +49,4 @@ class RoomDetailView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.user.role != 'admin':
             raise PermissionDenied("Only admin can delete rooms")
         instance.delete()
+

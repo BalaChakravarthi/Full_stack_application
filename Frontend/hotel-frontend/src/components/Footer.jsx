@@ -84,10 +84,10 @@ function Footer() {
             Contact
           </h3>
           <div className="space-y-2 text-sm">
-            <p>📍 Hyderabad, India</p>
-            <p>📞 +91 8790756997</p>
+            <p>Location: Hyderabad, India</p>
+            <p>Phone: +91 8790756997</p>
             <p className="break-all">
-              ✉ balachakarvarthi05@gmail.com
+              Email: balachakarvarthi05@gmail.com
             </p>
           </div>
         </div>
@@ -98,7 +98,7 @@ function Footer() {
       <div className="border-t border-gray-200 dark:border-gray-700
                       text-center py-4 text-sm
                       px-4">
-        © {new Date().getFullYear()} LuxStay. All rights reserved.
+        (c) {new Date().getFullYear()} LuxStay. All rights reserved.
       </div>
 
     </footer>
@@ -106,3 +106,4 @@ function Footer() {
 }
 
 export default Footer;
+

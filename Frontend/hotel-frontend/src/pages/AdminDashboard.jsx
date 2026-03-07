@@ -59,7 +59,7 @@ function AdminDashboard() {
         Admin Dashboard
       </h1>
 
-      {/* 📊 STAT CARDS */}
+      {/* Stat cards */}
       <div className="grid gap-6
                       grid-cols-1
                       sm:grid-cols-2
@@ -67,12 +67,12 @@ function AdminDashboard() {
                       mb-10">
 
         <StatCard title="Total Bookings" value={stats.total_bookings} />
-        <StatCard title="Total Revenue" value={`₹ ${stats.revenue}`} green />
-        <StatCard title="Average Rating" value={`⭐ ${stats.avg_rating}`} yellow />
+        <StatCard title="Total Revenue" value={`INR ${stats.revenue}`} green />
+        <StatCard title="Average Rating" value={`${stats.avg_rating}`} yellow />
         <StatCard title="Pending" value={stats.pending} yellow />
       </div>
 
-      {/* 📊 PIE CHART */}
+      {/* Pie chart */}
       <div className="bg-white dark:bg-gray-800
                       p-6 rounded-2xl shadow-lg mb-10">
 
@@ -98,7 +98,7 @@ function AdminDashboard() {
         </ResponsiveContainer>
       </div>
 
-      {/* 📋 BOOKINGS LIST */}
+      {/* Bookings list */}
       <h2 className="text-lg sm:text-xl font-semibold mb-4
                      text-gray-800 dark:text-white">
         All Bookings
@@ -120,9 +120,9 @@ function AdminDashboard() {
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 User: {b.user}
               </p>
-              <p className="text-sm">₹ {b.total_price}</p>
+              <p className="text-sm">INR {b.total_price}</p>
               <p className="text-sm">
-                Rating: {b.rating ? `⭐ ${b.rating}/5` : "Not rated"}
+                Rating: {b.rating ? `${b.rating}/5` : "Not rated"}
               </p>
             </div>
 
@@ -150,7 +150,7 @@ function AdminDashboard() {
   );
 }
 
-/* 🔹 Reusable Stat Card */
+/* Reusable stat card */
 function StatCard({ title, value, green, yellow }) {
   return (
     <div className="bg-white dark:bg-gray-800
@@ -173,3 +173,4 @@ function StatCard({ title, value, green, yellow }) {
 }
 
 export default AdminDashboard;
+

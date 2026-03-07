@@ -20,7 +20,7 @@ function BookingHistory() {
   useEffect(() => {
     fetchBookings();
 
-    // 🔥 Auto refresh every 5 seconds
+    // Auto refresh every 5 seconds
     const interval = setInterval(() => {
       fetchBookings();
     }, 5000);
@@ -87,11 +87,11 @@ function BookingHistory() {
                 </h2>
 
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {b.check_in} → {b.check_out}
+                  {b.check_in} {"->"} {b.check_out}
                 </p>
 
                 <p className="mt-1 font-semibold">
-                  ₹ {b.total_price}
+                  INR {b.total_price}
                 </p>
 
                 {/* Status */}
@@ -113,7 +113,7 @@ function BookingHistory() {
 
                 {b.rating ? (
                   <p className="text-yellow-500 font-medium">
-                    ⭐ {b.rating}/5
+                    {b.rating}/5
                   </p>
                 ) : (
                   b.status === "approved" && (
@@ -125,7 +125,7 @@ function BookingHistory() {
                           className="bg-yellow-400 hover:bg-yellow-500
                                      text-black px-3 py-1 rounded-lg
                                      text-sm transition">
-                          {star} ⭐
+                          {star}
                         </button>
                       ))}
                     </div>
@@ -142,3 +142,4 @@ function BookingHistory() {
 }
 
 export default BookingHistory;
+

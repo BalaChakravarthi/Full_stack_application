@@ -1,4 +1,5 @@
-from rest_framework import serializers
+﻿from rest_framework import serializers
+from urllib.parse import urlparse
 from .models import Room
 
 
@@ -11,7 +12,16 @@ class RoomSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         if instance.image:
             try:
-                data["image"] = instance.image.url
+                image_url = instance.image.url
             except Exception:
-                data["image"] = str(instance.image)
+                image_url = str(instance.image)
+
+            request = self.context.get("request")
+            parsed = urlparse(image_url)
+            if request and not (parsed.scheme and parsed.netloc):
+                image_url = request.build_absolute_uri(image_url)
+
+            data["image"] = image_url
         return data
+
+

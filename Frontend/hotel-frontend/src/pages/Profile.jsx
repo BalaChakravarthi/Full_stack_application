@@ -33,7 +33,7 @@ function Profile() {
           new_password: "",
         });
 
-        // 🔥 Save image for navbar
+        // Save image for navbar
         localStorage.setItem(
           "profile_image",
           res.data.profile_image || ""
@@ -75,17 +75,17 @@ function Profile() {
         });
       }
 
-      // 🔄 Get updated profile
+      // Get updated profile
       const updated = await API.get("accounts/profile/");
       setUser(updated.data);
 
-      // 🔥 Update navbar image
+      // Update navbar image
       localStorage.setItem(
         "profile_image",
         updated.data.profile_image || ""
       );
 
-      // 🔥 Force Navbar refresh
+      // Force navbar refresh
       window.dispatchEvent(new Event("storage"));
 
       alert("Profile Updated Successfully!");
@@ -129,8 +129,9 @@ function Profile() {
               preview
                 ? preview
                 : user?.profile_image
-                ? `${import.meta.env.VITE_API_URL}${user.profile_image}`
-                // ? `https://full-stack-application-o8bb.onrender.com${user.profile_image}`
+                ? user.profile_image.startsWith("http")
+                  ? user.profile_image
+                  : `${import.meta.env.VITE_API_URL}${user.profile_image}`
                 : "https://via.placeholder.com/120"
             }
             alt="Profile"
@@ -213,3 +214,4 @@ function Profile() {
 }
 
 export default Profile;
+

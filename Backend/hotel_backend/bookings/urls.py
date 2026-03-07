@@ -1,4 +1,4 @@
-from django.urls import path
+﻿from django.urls import path
 from .views import (
     create_booking,
     user_bookings,
@@ -11,15 +11,16 @@ from .views import (
 )
 
 urlpatterns = [
-    # 🔹 User
+    # User
     path("create/", create_booking, name="create-booking"),
     path("my/", user_bookings, name="user-bookings"),
     path("rate/<int:booking_id>/", add_rating, name="add-rating"),
     path("paid/<int:booking_id>/", mark_as_paid, name="mark-as-paid"),
 
-    # 🔹 Admin
+    # Admin
     path("all/", admin_all_bookings, name="admin-all-bookings"),
     path("update/<int:booking_id>/", update_booking_status, name="update-booking-status"),
     path("analytics/", admin_analytics, name="admin-analytics"),
     path("calendar/", booking_calendar, name="booking-calendar"),
 ]
+

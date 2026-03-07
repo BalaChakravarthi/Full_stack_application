@@ -1,4 +1,4 @@
-from django.db import models
+﻿from django.db import models
 
 class Room(models.Model):
     ROOM_TYPES = (
@@ -15,3 +15,4 @@ class Room(models.Model):
 
     def __str__(self):
         return self.room_number
+

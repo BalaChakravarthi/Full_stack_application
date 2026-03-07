@@ -22,10 +22,10 @@ function Login() {
 
       const res = await API.post("accounts/login/", form);
 
-      // 🔥 Clear old data first
+      // Clear old data first
       localStorage.clear();
 
-      // ✅ Save all required data
+      // Save all required data
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("username", res.data.user.username);
@@ -138,3 +138,4 @@ function Login() {
 }
 
 export default Login;
+

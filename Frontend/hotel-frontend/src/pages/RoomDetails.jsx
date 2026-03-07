@@ -110,7 +110,7 @@ function RoomDetails() {
           </h2>
 
           <p className="text-xl sm:text-2xl mb-6 font-semibold">
-            ₹ {room.price} / night
+            INR {room.price} / night
           </p>
 
           {/* DATE INPUTS */}
@@ -152,7 +152,7 @@ function RoomDetails() {
           {/* TOTAL PRICE */}
           {totalPrice > 0 && (
             <div className="mt-6 text-lg sm:text-xl font-semibold">
-              Total: ₹ {totalPrice}
+              Total: INR {totalPrice}
             </div>
           )}
 
@@ -174,3 +174,4 @@ function RoomDetails() {
 }
 
 export default RoomDetails;
+
