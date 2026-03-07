@@ -173,13 +173,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STORAGES = {
     "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # Cloudinary
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
@@ -196,11 +195,30 @@ cloudinary.config(
     secure=True,
 )
 
+_cloudinary_ready = bool(
+    CLOUDINARY_URL
+    or (
+        CLOUDINARY_STORAGE["CLOUD_NAME"]
+        and CLOUDINARY_STORAGE["API_KEY"]
+        and CLOUDINARY_STORAGE["API_SECRET"]
+    )
+)
+if _cloudinary_ready:
+    STORAGES["default"]["BACKEND"] = "cloudinary_storage.storage.MediaCloudinaryStorage"
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+else:
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+
 # Email (Anymail + SendGrid)
-EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
-ANYMAIL = {
-    "SENDGRID_API_KEY": os.getenv("SENDGRID_API_KEY", ""),
-}
+_sendgrid_api_key = os.getenv("SENDGRID_API_KEY", "")
+if _sendgrid_api_key:
+    EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+    ANYMAIL = {
+        "SENDGRID_API_KEY": _sendgrid_api_key,
+    }
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    ANYMAIL = {}
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@luxstay.com")
 CONTACT_ADMIN_EMAILS = os.getenv("CONTACT_ADMIN_EMAILS", DEFAULT_FROM_EMAIL)
 
