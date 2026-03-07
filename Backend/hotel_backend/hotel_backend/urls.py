@@ -40,6 +40,7 @@ urlpatterns = [
     path('api/bookings/', include('bookings.urls')),
     path('api/accounts/', include('accounts.urls')),
     path('api/rooms/', include('rooms.urls')),
+    path('api/contact/', include('contact.urls')),
 ]
 
 if settings.DEBUG:

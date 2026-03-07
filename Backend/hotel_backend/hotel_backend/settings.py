@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'accounts',
     'rooms',
     'bookings',
+    'contact',
     # 'accounts.apps.AccountsConfig',
     # 'bookings.apps.BookingsConfig',
     # 'rooms.apps.RoomsConfig',
@@ -201,5 +202,6 @@ ANYMAIL = {
     "SENDGRID_API_KEY": os.getenv("SENDGRID_API_KEY", ""),
 }
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@luxstay.com")
+CONTACT_ADMIN_EMAILS = os.getenv("CONTACT_ADMIN_EMAILS", DEFAULT_FROM_EMAIL)
 
 
