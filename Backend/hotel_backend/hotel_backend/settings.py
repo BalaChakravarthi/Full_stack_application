@@ -73,13 +73,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-# CORS_ALLOWED_ORIGINS = [
-#     "https://full-stack-application-pi.vercel.app",
-#     "https://full-stack-application-git-main-bala-chakravarthis-projects.vercel.app",
-#     "https://full-stack-application-31qssfn2j-bala-chakravarthis-projects.vercel.app"
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://full-stack-application-o8bb.onrender.com",
+    "https://full-stack-application-pi.vercel.app",
+    "https://full-stack-application-git-main-bala-chakravarthis-projects.vercel.app",
+    "https://full-stack-application-31qssfn2j-bala-chakravarthis-projects.vercel.app"
+]
     
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'hotel_backend.urls'
 
 TEMPLATES = [
