@@ -115,6 +115,7 @@ function Navbar() {
             <>
               <Link to="/home" className={linkStyle("/home")}>Home</Link>
               <Link to="/bookings" className={linkStyle("/bookings")}>Bookings</Link>
+              <Link to="/contact" className={linkStyle("/contact")}>Contact Us</Link>
 
               {role === "admin" && (
                 <>
@@ -204,6 +205,7 @@ function Navbar() {
             <>
               <Link to="/home" className={linkStyle("/home")}>Home</Link>
               <Link to="/bookings" className={linkStyle("/bookings")}>Bookings</Link>
+              <Link to="/contact" className={linkStyle("/contact")}>Contact Us</Link>
 
               <Link to="/profile" className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full overflow-hidden border border-blue-500">

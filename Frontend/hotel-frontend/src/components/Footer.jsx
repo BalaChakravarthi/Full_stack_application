@@ -50,9 +50,9 @@ function Footer() {
               </Link>
             </li>
             <li>
-              <span className="hover:text-blue-500 cursor-pointer transition">
+              <Link to="/contact" className="hover:text-blue-500 transition">
                 Contact Us
-              </span>
+              </Link>
             </li>
           </ul>
         </div>

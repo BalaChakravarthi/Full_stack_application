@@ -38,6 +38,10 @@ def send_status_email(sender, instance, created, **kwargs):
     if not instance.user.email:
         return
 
+    # Payment email is handled directly in the paid API view.
+    if instance.status == "paid":
+        return
+
     if instance.status == "approved":
         subject = "Your Booking Has Been Approved"
         status_message = "Great news! Your booking has been approved."
@@ -46,10 +50,6 @@ def send_status_email(sender, instance, created, **kwargs):
         subject = "Booking Rejected"
         status_message = "Unfortunately, your booking was rejected."
         color = "#ef4444"
-    elif instance.status == "paid":
-        subject = "Payment Received"
-        status_message = "We have received your payment. Awaiting approval."
-        color = "#3b82f6"
     else:
         subject = "Booking Status Updated"
         status_message = f"Your booking status is now {instance.status.upper()}."
