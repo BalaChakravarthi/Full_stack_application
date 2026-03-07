@@ -119,14 +119,14 @@ Thank you for choosing LuxStay!
         email = EmailMultiAlternatives(
             subject,
             text_content,
-            settings.EMAIL_HOST_USER,
+            settings.DEFAULT_FROM_EMAIL,
             [instance.user.email],
         )
 
         email.attach_alternative(html_content, "text/html")
 
         # ✅ Prevent server crash if SMTP fails
-        email.send(fail_silently=True)
+        email.send(fail_silently=False)
 
     except Exception as e:
         print("Email sending failed:", e)
